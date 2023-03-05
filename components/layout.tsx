@@ -7,7 +7,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
         <Navbar />
         <div className="w-full">
             <Topbar />
-            <main>
+            <main className="bg-slate-100 p-6 w-full h-screen">
                 {children}
             </main>
         </div>

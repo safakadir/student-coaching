@@ -6,9 +6,9 @@ import { FaBook, FaCalendarAlt, FaChartBar, FaListAlt, FaMoneyBill, FaMoneyCheck
 
 
 const Navbar: React.FC = ()  => {
-    return <nav className="h-screen border-r w-16 md:w-72 xl:w-80">
+    return <nav className="h-screen border-r w-16 md:w-72 xl:w-80 shadow-md">
         
-        <div className="h-16 px-2 md:px-4 flex items-center mb-6 border-b">
+        <div className="relative h-16 px-2 md:px-4 flex items-center mb-6 border-b shadow">
             <div className="relative w-11 h-11 lg:w-12 lg:h-12">
                 <Image src="/logo.png" fill alt="logo" />
             </div>

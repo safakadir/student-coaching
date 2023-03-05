@@ -14,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div className="border rounded-2xl font-bold mx-auto max-w-lg m-3 py-1 px-3">
+        <div className="border rounded-2xl font-bold mx-auto max-w-lg py-1 px-3 bg-white">
           Hello World!
         </div>
       </Layout>
