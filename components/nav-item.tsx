@@ -11,7 +11,7 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({icon, title, children, active=false, noclick=false}) => {
     return <li>
-        <div className={`flex mx-3 mb-1 px-2 py-1 text-base rounded-md
+        <div className={`flex mx-3 mb-1 px-3 py-1 text-base rounded-md
                             ${!active && !noclick ? ' hover:bg-gray-100 cursor-pointer' : ''}
                             ${active ? ' bg-gray-200' : ''}
                         `}>
@@ -19,7 +19,7 @@ const NavItem: React.FC<NavItemProps> = ({icon, title, children, active=false, n
             <div className="hidden md:block">{title}</div>
         </div>
         {children && 
-            <ul className="pl-6">{children}</ul>
+            <ul className="md:pl-6">{children}</ul>
         }
     </li>
 }
