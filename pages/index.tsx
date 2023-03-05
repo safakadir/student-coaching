@@ -1,3 +1,4 @@
+import Layout from '@/components/layout'
 import Head from 'next/head'
 //import { Inter } from 'next/font/google'
 
@@ -12,11 +13,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <Layout>
         <div className="border rounded-2xl font-bold mx-auto max-w-lg m-3 py-1 px-3">
           Hello World!
         </div>
-      </main>
+      </Layout>
     </>
   )
 }
