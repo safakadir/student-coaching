@@ -1,10 +1,12 @@
 import Link from "next/link"
-import React, { createElement, ReactElement } from "react"
-import { IconType } from "react-icons"
+import { useRouter } from "next/router"
+import React, { ReactElement } from "react"
+
+import menuTitles from "@/constants/menu-titles"
 
 interface NavItemContentProps {
     icon?: ReactElement,
-    title: string
+    title?: string
 }
 
 interface NavItemProps extends NavItemContentProps {
@@ -21,18 +23,23 @@ const NavItemContent: React.FC<NavItemContentProps> = ({icon, title}) => {
 }
 
 const NavItem: React.FC<NavItemProps> = ({icon, title, href, active=false, children}) => {
+    const router = useRouter()
+
+    const activeInternal = active || href===router.pathname 
+    const titleInternal = title ?? (href && menuTitles[href])
+
     const elClassNames = `flex mx-3 mb-1 px-3 py-1 text-base rounded-md
-        ${!active && href ? ' hover:bg-gray-100' : ''}
-        ${active ? ' bg-gray-200' : ''}`
+        ${!activeInternal && href ? ' hover:bg-gray-100' : ''}
+        ${activeInternal ? ' bg-gray-200' : ''}`
 
     return <li>
         {href ?
             <Link href={href} className={elClassNames}>
-                <NavItemContent icon={icon} title={title} />
+                <NavItemContent icon={icon} title={titleInternal} />
             </Link>
             :
             <div className={elClassNames}>
-                <NavItemContent icon={icon} title={title} />
+                <NavItemContent icon={icon} title={titleInternal} />
             </div>
         }
         

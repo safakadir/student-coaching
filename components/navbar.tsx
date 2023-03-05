@@ -4,9 +4,11 @@ import React from "react"
 import NavItem from "./nav-item"
 
 import { FaBook, FaCalendarAlt, FaChartBar, FaHome, FaListAlt, FaMoneyBill, FaMoneyCheckAlt, FaUserFriends, FaUserGraduate } from 'react-icons/fa'
+import { useRouter } from "next/router"
 
 
 const Navbar: React.FC = ()  => {
+    const router = useRouter()
     return <nav className="h-screen border-r w-16 md:w-72 xl:w-80">
         
         <Link href="/" className="relative h-16 px-2 md:px-4 flex items-center mb-6 border-b shadow">
@@ -20,16 +22,16 @@ const Navbar: React.FC = ()  => {
         </Link>
 
         <ul>
-            <NavItem href="/" title="Anasayfa" icon={<FaHome />} />
-            <NavItem href="/ogrenci" title="Öğrenci İşlemleri" icon={<FaListAlt />} />
-            <NavItem title="Ahmet Çizmeci" icon={<FaUserGraduate />} active >
-                <NavItem href="/ogrenci/kaynaktakip" title="Kaynak Takibi" icon={<FaBook />} />
-                <NavItem href="/ogrenci/deneme" title="Deneme Analizi" icon={<FaChartBar />} active />
-                <NavItem href="/ogrenci/gorusme" title="Görüşmeler" icon={<FaUserFriends />} />
-                <NavItem href="/ogrenci/odeme" title="Ödemeler" icon={<FaMoneyBill />} />
+            <NavItem href="/" icon={<FaHome />} />
+            <NavItem href="/ogrenci" icon={<FaListAlt />} />
+            <NavItem title="Ahmet Çizmeci" icon={<FaUserGraduate />} active={router.pathname.includes('/ogrenci/')} >
+                <NavItem href="/ogrenci/kaynaktakip" icon={<FaBook />} />
+                <NavItem href="/ogrenci/deneme" icon={<FaChartBar />} />
+                <NavItem href="/ogrenci/gorusme" icon={<FaUserFriends />} />
+                <NavItem href="/ogrenci/odeme" icon={<FaMoneyBill />} />
             </NavItem>
-            <NavItem href="/gorusme" title="Görüşme Takvimi" icon={<FaCalendarAlt />} />
-            <NavItem href="/odeme" title="Tüm Ödemeler" icon={<FaMoneyCheckAlt />} />
+            <NavItem href="/gorusme" icon={<FaCalendarAlt />} />
+            <NavItem href="/odeme" icon={<FaMoneyCheckAlt />} />
         </ul>
 
     </nav>
