@@ -4,12 +4,16 @@ interface NavItemProps {
     icon?: string,
     title: string,
     children?: ReactElement<NavItemProps> | ReactElement<NavItemProps>[],
+    active?: boolean
     noclick?: boolean
 }
 
-const NavItem: React.FC<NavItemProps> = ({icon, title, children, noclick=false}) => {
+const NavItem: React.FC<NavItemProps> = ({icon, title, children, active=false, noclick=false}) => {
     return <li>
-        <div className={`flex px-5 py-2 text-base ${!noclick ? 'hover:bg-gray-100 cursor-pointer' : ''}`}>
+        <div className={`flex mx-3 mb-1 px-3 py-1 text-base rounded-md
+                            ${!active && !noclick ? ' hover:bg-gray-100 cursor-pointer' : ''}
+                            ${active ? ' bg-gray-200' : ''}
+                        `}>
             <div className="pr-3">IC</div>
             <div className="hidden md:block">{title}</div>
         </div>

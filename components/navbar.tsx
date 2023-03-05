@@ -3,9 +3,9 @@ import React from "react"
 import NavItem from "./nav-item"
 
 const Navbar: React.FC = ()  => {
-    return <nav className="h-screen border w-16 md:w-72 xl:w-80">
+    return <nav className="h-screen border-r w-16 md:w-72 xl:w-80">
         
-        <div className="h-16 px-2 md:px-4 flex items-center mb-6 border-bottom">
+        <div className="h-16 px-2 md:px-4 flex items-center mb-6 border-b">
             <div className="relative w-11 h-11 lg:w-12 lg:h-12">
                 <Image src="/logo.png" fill alt="logo" />
             </div>
@@ -19,7 +19,7 @@ const Navbar: React.FC = ()  => {
             <NavItem title="Öğrenci İşlemleri" />
             <NavItem title="Ahmet Çizmeci" noclick>
                 <NavItem title="Kaynak Takibi" />
-                <NavItem title="Deneme Analizi" />
+                <NavItem title="Deneme Analizi" active />
                 <NavItem title="Görüşmeler" />
                 <NavItem title="Ödemeler" />
             </NavItem>
