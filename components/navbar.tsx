@@ -2,6 +2,9 @@ import Image from "next/image"
 import React from "react"
 import NavItem from "./nav-item"
 
+import { FaBook, FaCalendarAlt, FaChartBar, FaListAlt, FaMoneyBill, FaMoneyCheckAlt, FaUserFriends, FaUserGraduate } from 'react-icons/fa'
+
+
 const Navbar: React.FC = ()  => {
     return <nav className="h-screen border-r w-16 md:w-72 xl:w-80">
         
@@ -16,15 +19,15 @@ const Navbar: React.FC = ()  => {
         </div>
 
         <ul>
-            <NavItem title="Öğrenci İşlemleri" />
-            <NavItem title="Ahmet Çizmeci" noclick>
-                <NavItem title="Kaynak Takibi" />
-                <NavItem title="Deneme Analizi" active />
-                <NavItem title="Görüşmeler" />
-                <NavItem title="Ödemeler" />
+            <NavItem title="Öğrenci İşlemleri" icon={<FaListAlt />} />
+            <NavItem title="Ahmet Çizmeci" icon={<FaUserGraduate />} active >
+                <NavItem title="Kaynak Takibi" icon={<FaBook />} />
+                <NavItem title="Deneme Analizi" icon={<FaChartBar />} active />
+                <NavItem title="Görüşmeler" icon={<FaUserFriends />} />
+                <NavItem title="Ödemeler" icon={<FaMoneyBill />} />
             </NavItem>
-            <NavItem title="Görüşme Takvimi" />
-            <NavItem title="Tüm Ödemeler" />
+            <NavItem title="Görüşme Takvimi" icon={<FaCalendarAlt />} />
+            <NavItem title="Tüm Ödemeler" icon={<FaMoneyCheckAlt />} />
         </ul>
 
     </nav>
