@@ -29,7 +29,7 @@ const Navbar: React.FC = ()  => {
             <NavItem href="/" icon={<FaHome />} />
             <NavItem href="/ogrenci" icon={<FaListAlt />} />
             { selectedOgrenci && 
-            <NavItem title={selectedOgrenci.name} icon={<FaUserGraduate />} active={router.pathname.includes('/ogrenci/')} >
+            <NavItem title={selectedOgrenci.fullname} icon={<FaUserGraduate />} active={router.pathname.includes('/ogrenci/')} >
                 <NavItem href="/ogrenci/bilgi" icon={<FaIdCard />} />
                 <NavItem href="/ogrenci/kaynaktakip" icon={<FaBook />} />
                 <NavItem href="/ogrenci/deneme" icon={<FaChartBar />} />

@@ -14,8 +14,7 @@ export interface Veli {
 }
 
 export interface OgrenciBase {
-    name: string,
-    surname: string,
+    fullname: string,
     registeredAt: number,
     birthDate: string,
     terms: OgrenciDonem[],

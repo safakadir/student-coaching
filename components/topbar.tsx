@@ -10,7 +10,7 @@ const Topbar: React.FC = () => {
     const router = useRouter()
     
     return <div className="relative border-b w-full h-16 shadow flex items-center px-3">
-        {selectedOgrenci && <span >{selectedOgrenci?.name} &gt;&nbsp;</span>}
+        {selectedOgrenci && <span >{selectedOgrenci?.fullname} &gt;&nbsp;</span>}
         <span className="font-bold">{menuItems[router.pathname]}</span>
     </div>
 }

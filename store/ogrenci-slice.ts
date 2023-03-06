@@ -1,4 +1,4 @@
-import { Ogrenci } from "@/lib/types/ogrenci";
+import { Ogrenci } from "@/lib/types/ogrenci-types";
 import {createDraftSafeSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "./store";
 

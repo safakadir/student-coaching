@@ -1,25 +1,28 @@
 import Layout from "@/components/layout"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useDispatch } from "react-redux";
 import { setOgrenci } from "@/store/ogrenci-slice"
 import { useRouter } from "next/router";
-import { findAllStudents } from "@/lib/dao/ogrenci";
-import { Ogrenci } from "@/lib/types/ogrenci";
+import { Ogrenci } from "@/lib/types/ogrenci-types";
+import { Pagination } from "@/lib/types/pagination-types";
 
 export async function getServerSideProps() {
-    const students = await findAllStudents()
+    const response = await fetch('http://localhost:3000/api/ogrenci')
     return {
-        props: {students}
+        props: {studentsData: await response.json()}
     }
 }
 
 interface OgrenciPageProps {
-    students: Ogrenci[]
+    studentsData: Pagination<Ogrenci>
 }
 
-const OgrenciPage: React.FC<OgrenciPageProps> = ({students}) => {
+const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
+    console.log(studentsData)
     const dispatch = useDispatch()
     const router = useRouter()
+
+    const students = studentsData.data
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         const student = students.find(s => s._id === e.currentTarget.value)
@@ -35,7 +38,7 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({students}) => {
         <div className="flex flex-col">
             Öğrenci İşlemleri Sayfası
             {students.map(s => 
-                <button key={s._id} className="border rounded-xl hover:bg-neutral-100 bg-white text-blue-500 p-2 w-48 mt-2" onClick={handleClick} value={s._id}>{s.name} {s.surname}</button>
+                <button key={s._id} className="border rounded-xl hover:bg-neutral-100 bg-white text-blue-500 p-2 w-48 mt-2" onClick={handleClick} value={s._id}>{s.fullname}</button>
             )}
         </div>
     </Layout>
