@@ -18,7 +18,6 @@ interface OgrenciPageProps {
 }
 
 const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
-    console.log(studentsData)
     const dispatch = useDispatch()
     const router = useRouter()
 
@@ -35,11 +34,28 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
     }
 
     return <Layout>
-        <div className="flex flex-col">
-            Öğrenci İşlemleri Sayfası
-            {students.map(s => 
-                <button key={s._id} className="border rounded-xl hover:bg-neutral-100 bg-white text-blue-500 p-2 w-48 mt-2" onClick={handleClick} value={s._id}>{s.fullname}</button>
-            )}
+        <div className="relative overflow-x-auto w-full rounded-lg shadow grow">
+            <table className="text-sm text-left text-gray-600 w-full">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th scope="col" className="whitespace-nowrap px-6 py-4">Öğrenci Adı Soyadı</th>
+                        <th scope="col" className="whitespace-nowrap px-6 py-4">İletişim</th>
+                        <th scope="col" className="whitespace-nowrap px-6 py-4">Sınıfı</th>
+                        <th scope="col" className="whitespace-nowrap px-6 py-4">Alanı</th>
+                        <th scope="col" className="whitespace-nowrap px-6 py-4">Okulu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {students.map(s => 
+                    <tr key={s._id} className="bg-white border-b">
+                        <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">{s.fullname}</th>
+                        <td className="whitespace-nowrap px-6 py-4">{s.contactPhone}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{s.term.grade}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{s.term.field}</td>
+                        <td className="whitespace-nowrap px-6 py-4">{s.term.school}</td>
+                    </tr>)}
+                </tbody>
+            </table>
         </div>
     </Layout>
 }

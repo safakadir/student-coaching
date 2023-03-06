@@ -17,8 +17,7 @@ export interface OgrenciBase {
     fullname: string,
     registeredAt: number,
     birthDate: string,
-    terms: OgrenciDonem[],
-    parents: Veli[],
+    term: OgrenciDonem,
     contactPhone: string
 }
 
@@ -27,5 +26,7 @@ export interface Ogrenci extends OgrenciBase {
 }
 
 export interface OgrenciEntity extends OgrenciBase {
-    _id: ObjectId
+    _id: ObjectId,
+    oldTerms: OgrenciDonem[],
+    parents: Veli[],
 }
