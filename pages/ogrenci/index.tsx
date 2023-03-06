@@ -6,15 +6,14 @@ import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
 
-const BASE_API_URL = process.env.BASE_API_URL
-
 export async function getServerSideProps() {
     return {
-        props: {studentsData: await fetchOgrenci(`${BASE_API_URL}/api/ogrenci`)}
+        props: {studentsData: await fetchOgrenci('/api/ogrenci')}
     }
 }
 
-async function fetchOgrenci(url: string) {
+async function fetchOgrenci(path: string): Promise<Pagination<Ogrenci>> {
+    const url = process.env.BASE_API_URL+path
     const response = await fetch(url)
     return await response.json()
 }
@@ -27,13 +26,13 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
 
     const [searchText, setSearchText] = useState<string>('')
     const [currentSearch, setCurrentSearch] = useState<string | undefined>(undefined)
-    const [students, setStudents] = useState<Ogrenci[]>(studentsData.data)
+    const [studentsP, setStudentsP] = useState<Pagination<Ogrenci>>(studentsData)
 
     const dispatch = useDispatch()
     const router = useRouter()
 
     const handleClick = (clickedId: string) => {
-        const student = students.find(s => s._id === clickedId)
+        const student = studentsP.data.find(s => s._id === clickedId)
         if(!student) {
             console.log("Error: couldn't find clicked student")
             return
@@ -44,16 +43,23 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
 
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if(e.key === 'Enter') {
-          console.log("Search: "+e.currentTarget.value)
           setCurrentSearch(e.currentTarget.value)
         }
     }
 
-    useEffect(() => {
-        const url = currentSearch ? `${BASE_API_URL}/api/ogrenci?search=${currentSearch}` : `${BASE_API_URL}/api/ogrenci`
+    const handleNextPrev = (nextPrevQuery?: string) => {
+        if(!nextPrevQuery) return
+        const path = `/api/ogrenci?${nextPrevQuery}`
+        fetchOgrenci(path).then(response => {
+            setStudentsP(response)
+        })
+    }
 
-        fetchOgrenci(url).then(response => {
-            setStudents(response.data)
+    useEffect(() => {
+        const path = currentSearch ? `/api/ogrenci?search=${currentSearch}` : '/api/ogrenci'
+
+        fetchOgrenci(path).then(response => {
+            setStudentsP(response)
         })
     }, [currentSearch])
 
@@ -73,7 +79,7 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {students.map(s => 
+                    {studentsP.data.map(s => 
                     <tr key={s._id} className="bg-white border-b hover:bg-gray-50 cursor-pointer" onClick={() => handleClick(s._id)}>
                         <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">{s.fullname}</th>
                         <td className="whitespace-nowrap px-6 py-4">{s.contactPhone}</td>
@@ -83,6 +89,16 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
                     </tr>)}
                 </tbody>
             </table>
+        </div>
+        <div className="flex justify-between px-6 text-sm text-gray-400">
+            <span>{studentsP.totalCount} kayıttan {studentsP.offset+1}-{studentsP.offset+studentsP.data.length} arası</span>
+            <div>
+                {studentsP.page > 1 && 
+                    <a className="text-blue-400 cursor-pointer" onClick={() => handleNextPrev(studentsP.prevQuery)}>&lt; Önceki</a>}
+                <span className="mx-2">{studentsP.page}. sayfa</span>
+                {studentsP.page < Math.ceil(studentsP.totalCount/studentsP.limit) && 
+                    <a className="text-blue-400 cursor-pointer" onClick={() => handleNextPrev(studentsP.nextQuery)}>Sonraki &gt;</a>}
+            </div>
         </div>
     </Layout>
 }

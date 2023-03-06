@@ -17,26 +17,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw new Error("Invalid query paramaters", {cause: e})
     }
 
-    let students: OgrenciEntity[]
+    let result
     if(searchParam) {
-        students = await searchStudents(searchParam, offsetParam, limitParam)
+        result = await searchStudents(searchParam, offsetParam, limitParam)
     }
     else {
-        students = await findStudents(offsetParam, limitParam)
+        result = await findStudents(offsetParam, limitParam)
     }
 
-    const result: Pagination<OgrenciEntity> = {
+    const response: Pagination<OgrenciEntity> = {
         offset: offsetParam,
         limit: limitParam,
-        count: students.length,
-        nextQuery: students.length == limitParam ? generateNextQuery(offsetParam, limitParam) : undefined,
-        data: students
+        totalCount: result.totalCount,
+        page: offsetParam/limitParam+1,
+        nextQuery: result.data.length == limitParam ? generateNextQuery(offsetParam, limitParam, searchParam) : undefined,
+        prevQuery: offsetParam > 0 ? generatePrevQuery(offsetParam, limitParam, searchParam) : undefined,
+        data: result.data
     }
-    res.status(200).json(result)
+    res.status(200).json(response)
 }
 
-function generateNextQuery(offset: number, limit: number): string {
-    return `limit=${limit}&offset=${offset+limit}`
+function generateNextQuery(offset: number, limit: number, searchParam?: string): string {
+    return `limit=${limit}&offset=${offset+limit}`+(searchParam ? `&search=${searchParam}` : '')
+}
+
+function generatePrevQuery(offset: number, limit: number, searchParam?: string): string {
+    return `limit=${limit}&offset=${offset-limit}`+(searchParam ? `&search=${searchParam}` : '')
 }
 
 function validateQueryTypes(req: NextApiRequest): void {

@@ -1,7 +1,12 @@
-export interface Pagination<T> {
-    count: number,
+export interface PaginationBase<T> {
+    totalCount: number,
+    data: T[]
+}
+
+export interface Pagination<T> extends PaginationBase<T> {
     limit: number,
     offset: number,
+    page: number,
     nextQuery?: string,
-    data: T[]
+    prevQuery?: string
 }
