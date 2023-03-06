@@ -6,7 +6,11 @@ import { clearOgrenci } from '@/store/ogrenci-slice'
 import Navbar from "./navbar"
 import Topbar from "./topbar"
 
-const Layout: React.FC<PropsWithChildren> = ({children}) => {
+interface LayoutProps extends PropsWithChildren {
+    className?: string
+}
+
+const Layout: React.FC<LayoutProps> = ({children, className=""}) => {
     const router = useRouter()
     const dispatch = useDispatch()
   
@@ -20,7 +24,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
         <Navbar />
         <div className="grow overflow-hidden">
             <Topbar />
-            <main className="bg-slate-100 p-6 w-full h-screen">
+            <main className={`bg-slate-100 p-6 w-full h-screen ${className}`} >
                 {children}
             </main>
         </div>

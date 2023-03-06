@@ -13,14 +13,14 @@ const Navbar: React.FC = ()  => {
 
     const selectedOgrenci = useSelector(ogrenciSelector)
 
-    return <nav className="h-screen border-r w-16 md:w-56 lg:w-72 shrink-0">
+    return <nav className="h-screen border-r w-16 md:w-56 lg:w-64 shrink-0">
         
         <Link href="/" className="relative h-16 px-2 md:px-4 flex items-center justify-center md:justify-start mb-6 border-b shadow">
             <div className="relative w-12 h-12">
                 <Image src="/logo.png" fill alt="logo" />
             </div>
             <div className="hidden md:block pl-2">
-                <div className="md:text-sm lg:text-lg xl:text-xl font-bold">AREL AKADEMİ</div>
+                <div className="md:text-lg xl:text-xl font-bold">AREL AKADEMİ</div>
                 <div className="text-xs xl:text-sm">Koçluk Bilgi Sistemi</div>
             </div>
         </Link>
