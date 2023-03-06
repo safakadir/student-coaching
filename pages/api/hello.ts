@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const config = {
   runtime: 'edge'
@@ -10,6 +10,9 @@ type Data = {
   runtime: string
 }
 
-export default function handler(req: NextRequest) {
-  NextResponse.json({ name: 'John Doe', runtime: 'Edge' })
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+  res.json({ name: 'John Doe', runtime: 'Edge' })
 }
