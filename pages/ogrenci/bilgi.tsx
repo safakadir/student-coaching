@@ -8,7 +8,7 @@ const OgrenciBilgiPage: React.FC = () => {
 
     return <Layout>
         Öğrenci Bilgi Sayfası
-        <h1 className="text-2xl font-bold">{selectedOgrenci?.name}</h1>
+        <h1 className="text-2xl font-bold">{selectedOgrenci?.fullname}</h1>
     </Layout>
 }
 
