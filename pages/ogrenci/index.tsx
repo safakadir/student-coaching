@@ -6,9 +6,11 @@ import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
 
+const BASE_API_URL = process.env.BASE_API_URL
+
 export async function getServerSideProps() {
     return {
-        props: {studentsData: await fetchOgrenci('http://localhost:3000/api/ogrenci')}
+        props: {studentsData: await fetchOgrenci(`${BASE_API_URL}/api/ogrenci`)}
     }
 }
 
@@ -48,10 +50,8 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
     }
 
     useEffect(() => {
-        let url = 'http://localhost:3000/api/ogrenci'
-        if(currentSearch) {
-            url = `http://localhost:3000/api/ogrenci?search=${currentSearch}`
-        }
+        const url = currentSearch ? `${BASE_API_URL}/api/ogrenci?search=${currentSearch}` : `${BASE_API_URL}/api/ogrenci`
+
         fetchOgrenci(url).then(response => {
             setStudents(response.data)
         })
