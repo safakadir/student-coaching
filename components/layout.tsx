@@ -18,7 +18,7 @@ const Layout: React.FC<PropsWithChildren> = ({children}) => {
   
     return <div className="flex w-full">
         <Navbar />
-        <div className="w-full">
+        <div className="grow overflow-hidden">
             <Topbar />
             <main className="bg-slate-100 p-6 w-full h-screen">
                 {children}
