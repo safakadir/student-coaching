@@ -33,10 +33,21 @@ const OgrenciPage: React.FC = () => {
         }
     }
 
+    const handleClear = () => {
+        apiResult.reset()
+        setSearchText('')
+    }
+
     return <Layout className="flex flex-col">
-        <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4" placeholder="Öğrenci ara..." 
-            value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
-            onKeyDown={handleSearchKeyDown} />
+        <div className="relative w-full">
+            <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full" placeholder="Öğrenci ara..." 
+                value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
+                onKeyDown={handleSearchKeyDown} />
+            {studentsPage?.search &&
+            <a className="absolute right-0 m-2.5 bg-gray-400 text-white w-5 h-5 text-center text-xs rounded-full p-0.5 cursor-pointer"
+                onClick={handleClear}>X</a>
+            }
+        </div>
         <div className="overflow-x-auto w-full rounded-lg shadow">
             <table className="text-sm text-left text-gray-600 w-full">
                 <thead className="bg-slate-200">

@@ -37,6 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         limit: limitParam,
         count: result.data.length,
         totalCount: result.totalCount,
+        search: searchParam,
         page: offsetParam/limitParam+1,
         nextQuery: result.data.length == limitParam ? generateNextQuery(offsetParam, limitParam, searchParam) : undefined,
         prevQuery: offsetParam > 0 ? generatePrevQuery(offsetParam, limitParam, searchParam) : undefined,
