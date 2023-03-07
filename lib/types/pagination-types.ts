@@ -4,6 +4,7 @@ export interface PaginationBase<T> {
 }
 
 export interface Pagination<T> extends PaginationBase<T> {
+    count: number,
     limit: number,
     offset: number,
     page: number,

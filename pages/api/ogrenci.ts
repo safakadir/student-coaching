@@ -1,11 +1,16 @@
-import { findStudents, searchStudents } from "@/lib/dao/ogrenci-dao";
-import { OgrenciEntity } from "@/lib/types/ogrenci-types";
+import { addStudent, findStudents, searchStudents } from "@/lib/dao/ogrenci-dao";
+import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const HARD_LIMIT = 10
+const HARD_LIMIT = 3
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if(req.method == 'POST') {
+        addStudent(req.body as Ogrenci)
+        return res.status(200).end()
+    }
+
     let searchParam: string|undefined, limitParam: number, offsetParam: number;
     try {
         validateQueryTypes(req)
@@ -25,9 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         result = await findStudents(offsetParam, limitParam)
     }
 
-    const response: Pagination<OgrenciEntity> = {
+    const response: Pagination<Ogrenci> = {
         offset: offsetParam,
         limit: limitParam,
+        count: result.data.length,
         totalCount: result.totalCount,
         page: offsetParam/limitParam+1,
         nextQuery: result.data.length == limitParam ? generateNextQuery(offsetParam, limitParam, searchParam) : undefined,
@@ -38,11 +44,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 function generateNextQuery(offset: number, limit: number, searchParam?: string): string {
-    return `limit=${limit}&offset=${offset+limit}`+(searchParam ? `&search=${searchParam}` : '')
+    return (searchParam ? `&search=${searchParam}` : '') + `limit=${limit}&offset=${offset+limit}`
 }
 
 function generatePrevQuery(offset: number, limit: number, searchParam?: string): string {
-    return `limit=${limit}&offset=${offset-limit}`+(searchParam ? `&search=${searchParam}` : '')
+    return (searchParam ? `&search=${searchParam}` : '') + `limit=${limit}&offset=${offset-limit}`
 }
 
 function validateQueryTypes(req: NextApiRequest): void {
