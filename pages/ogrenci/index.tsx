@@ -1,11 +1,11 @@
 import Layout from "@/components/layout"
-import React, { KeyboardEvent, useEffect, useState } from "react"
+import React, { KeyboardEvent, useState } from "react"
 import { useDispatch } from "react-redux";
 import { setOgrenci } from "@/store/ogrenci-slice"
 import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
-import { Pagination } from "@/lib/types/pagination-types";
 import { usePaginationApi } from "@/hooks/use-pagination-api";
+import Head from "next/head";
 
 const OgrenciPage: React.FC = () => {
 
@@ -38,7 +38,12 @@ const OgrenciPage: React.FC = () => {
         setSearchText('')
     }
 
-    return <Layout className="flex flex-col">
+    return <>
+    <Head>
+        <title>Öğrenci İşlemleri</title>
+    </Head>
+    <Layout className="flex flex-col">
+       
         <div className="relative w-full">
             <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full" placeholder="Öğrenci ara..." 
                 value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
@@ -88,6 +93,7 @@ const OgrenciPage: React.FC = () => {
         </div>
         }
     </Layout>
+    </>
 }
 
 export default OgrenciPage
