@@ -3,9 +3,11 @@ import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const HARD_LIMIT = 3
+const HARD_LIMIT = 10
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const PAGE_LIMIT: number = parseNumber(process.env.PAGE_LIMIT) ?? HARD_LIMIT
+    
     if(req.method == 'POST') {
         addStudent(req.body as Ogrenci)
         return res.status(200).end()
@@ -15,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         validateQueryTypes(req)
         searchParam = req.query.search as string|undefined
-        limitParam = parseNumber(req.query.limit as string) ?? HARD_LIMIT
+        limitParam = parseNumber(req.query.limit as string) ?? PAGE_LIMIT
         offsetParam = parseNumber(req.query.offset as string) ?? 0
     }
     catch (e) {
@@ -59,7 +61,7 @@ function validateQueryTypes(req: NextApiRequest): void {
     }
 }
 
-function parseNumber(str: string): number|undefined {
+function parseNumber(str: string|undefined): number|undefined {
     if(!str) return
     const n = parseInt(str)
     if(isNaN(n)) throw new Error("Input is not parsable as number")
