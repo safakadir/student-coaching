@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { usePaginationApi } from "@/hooks/use-pagination-api";
 import Head from "next/head";
+import TextField from "@/components/base/text-field";
 
 const OgrenciPage: React.FC = () => {
 
@@ -27,10 +28,8 @@ const OgrenciPage: React.FC = () => {
         router.push('/ogrenci/bilgi')
     }
 
-    const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === 'Enter') {
-            apiResult.search(searchText)
-        }
+    const handleSearchEnter = (searchText: string) => {
+        apiResult.search(searchText)
     }
 
     const handleClear = () => {
@@ -43,11 +42,9 @@ const OgrenciPage: React.FC = () => {
         <title>Öğrenci İşlemleri</title>
     </Head>
     <Layout className="flex flex-col">
-       
         <div className="relative w-full">
-            <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full" placeholder="Öğrenci ara..." 
-                value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
-                onKeyDown={handleSearchKeyDown} />
+            <TextField value={searchText} onChange={(value) => setSearchText(value)} onEnter={handleSearchEnter} 
+                placeholder="Öğrenci ara..." />
             {studentsPage?.search &&
             <a className="absolute right-0 m-2.5 bg-gray-400 text-white w-5 h-5 text-center text-xs rounded-full p-0.5 cursor-pointer"
                 onClick={handleClear}>X</a>
