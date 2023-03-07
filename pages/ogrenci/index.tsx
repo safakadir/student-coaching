@@ -5,34 +5,20 @@ import { setOgrenci } from "@/store/ogrenci-slice"
 import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
+import { usePaginationApi } from "@/hooks/use-pagination-api";
 
-export async function getServerSideProps() {
-    return {
-        props: {studentsData: await fetchOgrenci('/api/ogrenci')}
-    }
-}
-
-async function fetchOgrenci(path: string): Promise<Pagination<Ogrenci>> {
-    const url = process.env.BASE_API_URL+path
-    const response = await fetch(url)
-    return await response.json()
-}
-
-interface OgrenciPageProps {
-    studentsData: Pagination<Ogrenci>
-}
-
-const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
+const OgrenciPage: React.FC = () => {
 
     const [searchText, setSearchText] = useState<string>('')
-    const [currentSearch, setCurrentSearch] = useState<string | undefined>(undefined)
-    const [studentsP, setStudentsP] = useState<Pagination<Ogrenci>>(studentsData)
+    const apiResult = usePaginationApi<Ogrenci>('/api/ogrenci')
+    const studentsPage = apiResult.pageResult
+    const students = studentsPage?.data
 
     const dispatch = useDispatch()
     const router = useRouter()
 
     const handleClick = (clickedId: string) => {
-        const student = studentsP.data.find(s => s._id === clickedId)
+        const student = students?.find(s => s._id === clickedId)
         if(!student) {
             console.log("Error: couldn't find clicked student")
             return
@@ -43,31 +29,15 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
 
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if(e.key === 'Enter') {
-          setCurrentSearch(e.currentTarget.value)
+            apiResult.search(searchText)
         }
     }
-
-    const handleNextPrev = (nextPrevQuery?: string) => {
-        if(!nextPrevQuery) return
-        const path = `/api/ogrenci?${nextPrevQuery}`
-        fetchOgrenci(path).then(response => {
-            setStudentsP(response)
-        })
-    }
-
-    useEffect(() => {
-        const path = currentSearch ? `/api/ogrenci?search=${currentSearch}` : '/api/ogrenci'
-
-        fetchOgrenci(path).then(response => {
-            setStudentsP(response)
-        })
-    }, [currentSearch])
 
     return <Layout className="flex flex-col gap-4">
         <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2" placeholder="Öğrenci ara..." 
             value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
             onKeyDown={handleSearchKeyDown} />
-        <div className=" overflow-x-auto w-full rounded-lg shadow">
+        <div className="overflow-x-auto w-full rounded-lg shadow">
             <table className="text-sm text-left text-gray-600 w-full">
                 <thead className="bg-slate-200">
                     <tr>
@@ -77,9 +47,13 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
                         <th scope="col" className="whitespace-nowrap px-6 py-4">Alanı</th>
                         <th scope="col" className="whitespace-nowrap px-6 py-4">Okulu</th>
                     </tr>
+                    {apiResult.loading &&
+                    <tr className="bg-gray-100 h-1.5">
+                        <td colSpan={5} className="bg-blue-500 h-1.5 w-full origin-[0%_50%] animate-indeterminate"></td>
+                    </tr>}
                 </thead>
                 <tbody>
-                    {studentsP.data.map(s => 
+                    {students?.map(s => 
                     <tr key={s._id} className="bg-white border-b hover:bg-gray-50 cursor-pointer" onClick={() => handleClick(s._id)}>
                         <th scope="row" className="whitespace-nowrap px-6 py-4 font-medium">{s.fullname}</th>
                         <td className="whitespace-nowrap px-6 py-4">{s.contactPhone}</td>
@@ -90,16 +64,18 @@ const OgrenciPage: React.FC<OgrenciPageProps> = ({studentsData}) => {
                 </tbody>
             </table>
         </div>
+        {studentsPage &&
         <div className="flex justify-between px-6 text-sm text-gray-400">
-            <span>{studentsP.totalCount} kayıttan {studentsP.offset+1}-{studentsP.offset+studentsP.data.length} arası</span>
+            <span>{studentsPage.totalCount} kayıttan {studentsPage.offset+1}-{studentsPage.offset+studentsPage.data.length} arası</span>
             <div>
-                {studentsP.page > 1 && 
-                    <a className="text-blue-400 cursor-pointer" onClick={() => handleNextPrev(studentsP.prevQuery)}>&lt; Önceki</a>}
-                <span className="mx-2">{studentsP.page}. sayfa</span>
-                {studentsP.page < Math.ceil(studentsP.totalCount/studentsP.limit) && 
-                    <a className="text-blue-400 cursor-pointer" onClick={() => handleNextPrev(studentsP.nextQuery)}>Sonraki &gt;</a>}
+                {studentsPage.page > 1 && 
+                    <a className="text-blue-400 cursor-pointer" onClick={() => apiResult.gotoPage(studentsPage.page-1)}>&lt; Önceki</a>}
+                <span className="mx-2">{studentsPage.page}. sayfa</span>
+                {studentsPage.page < Math.ceil(studentsPage.totalCount/studentsPage.limit) && 
+                    <a className="text-blue-400 cursor-pointer" onClick={() => apiResult.gotoPage(studentsPage.page+1)}>Sonraki &gt;</a>}
             </div>
         </div>
+        }
     </Layout>
 }
 
