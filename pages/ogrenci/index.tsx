@@ -33,8 +33,8 @@ const OgrenciPage: React.FC = () => {
         }
     }
 
-    return <Layout className="flex flex-col gap-4">
-        <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2" placeholder="Öğrenci ara..." 
+    return <Layout className="flex flex-col">
+        <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4" placeholder="Öğrenci ara..." 
             value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
             onKeyDown={handleSearchKeyDown} />
         <div className="overflow-x-auto w-full rounded-lg shadow">
@@ -65,7 +65,7 @@ const OgrenciPage: React.FC = () => {
             </table>
         </div>
         {studentsPage &&
-        <div className="flex justify-between px-6 text-sm text-gray-400">
+        <div className="flex justify-between px-6 text-sm text-gray-400 mt-2">
             <span>{studentsPage.totalCount} kayıttan {studentsPage.offset+1}-{studentsPage.offset+studentsPage.data.length} arası</span>
             <div>
                 {studentsPage.page > 1 && 
