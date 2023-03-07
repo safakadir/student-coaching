@@ -32,6 +32,7 @@ To learn more about the tools used in this project, take a look at the following
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Tailwind CSS](https://tailwindcss.com/docs) - check the documentation of Tailwind CSS.
 - [React Icons](https://react-icons.github.io/react-icons) - icon library with as many icons as you want that is used in the project.
-- [MongoDB with Next.js](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb) - article provides a tutorial for official MongoDB-Next.js integration.
+- [Cloud Firestore](https://firebase.google.com/docs/firestore) - flexible no-sql database with connectionless and serverless features.
+- [MongoDB](https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb) is disused because of frasturating connection overhead in serverless functions, for each initial request
 
 Bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
