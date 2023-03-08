@@ -1,11 +1,13 @@
 import Layout from "@/components/layout"
-import React, { KeyboardEvent, useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useDispatch } from "react-redux";
 import { setOgrenci } from "@/store/ogrenci-slice"
 import { useRouter } from "next/router";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
-import { Pagination } from "@/lib/types/pagination-types";
 import { usePaginationApi } from "@/hooks/use-pagination-api";
+import Head from "next/head";
+import TextField from "@/components/base/text-field";
+import CloseButton from "@/components/base/close-button";
 
 const OgrenciPage: React.FC = () => {
 
@@ -27,10 +29,8 @@ const OgrenciPage: React.FC = () => {
         router.push('/ogrenci/bilgi')
     }
 
-    const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === 'Enter') {
-            apiResult.search(searchText)
-        }
+    const handleSearchEnter = (searchText: string) => {
+        apiResult.search(searchText)
     }
 
     const handleClear = () => {
@@ -38,15 +38,15 @@ const OgrenciPage: React.FC = () => {
         setSearchText('')
     }
 
-    return <Layout className="flex flex-col">
+    return <>
+    <Head>
+        <title>Öğrenci İşlemleri</title>
+    </Head>
+    <Layout className="flex flex-col">
         <div className="relative w-full">
-            <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full" placeholder="Öğrenci ara..." 
-                value={searchText} onChange={e => setSearchText(e.currentTarget.value)} 
-                onKeyDown={handleSearchKeyDown} />
-            {studentsPage?.search &&
-            <a className="absolute right-0 m-2.5 bg-gray-400 text-white w-5 h-5 text-center text-xs rounded-full p-0.5 cursor-pointer"
-                onClick={handleClear}>X</a>
-            }
+            <TextField value={searchText} onChange={(value) => setSearchText(value)} onEnter={handleSearchEnter} 
+                placeholder="Öğrenci ara..." />
+            {studentsPage?.search && <CloseButton className="absolute right-0 m-2.5" onClick={handleClear} />}
         </div>
         <div className="overflow-x-auto w-full rounded-lg shadow">
             <table className="text-sm text-left text-gray-600 w-full">
@@ -88,6 +88,7 @@ const OgrenciPage: React.FC = () => {
         </div>
         }
     </Layout>
+    </>
 }
 
 export default OgrenciPage
