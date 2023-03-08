@@ -47,6 +47,11 @@ const OgrenciPage: React.FC = () => {
             <TextField value={searchText} onChange={(value) => setSearchText(value)} onEnter={handleSearchEnter} 
                 placeholder="Öğrenci ara..." />
             {studentsPage?.search && <CloseButton className="absolute right-0 m-2.5" onClick={handleClear} />}
+            <select>
+                <option value="value-1">Value 1</option>
+                <option value="value-2">Value 2</option>
+                <option value="value-3">Value 3</option>
+            </select>
         </div>
         <div className="overflow-x-auto w-full rounded-lg shadow">
             <table className="text-sm text-left text-gray-600 w-full">

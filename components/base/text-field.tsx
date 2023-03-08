@@ -1,7 +1,7 @@
 import { useState, KeyboardEvent, useEffect } from "react"
 
 interface TextFieldProps {
-    value: string,
+    value: string | undefined,
     placeholder?: string,
     onChange: (value: string) => void,
     onEnter?: (text: string) => void
@@ -10,7 +10,7 @@ interface TextFieldProps {
 const TextField: React.FC<TextFieldProps> = ({value, placeholder, onChange, onEnter}) => {
 
     const handleSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === 'Enter' && onEnter) {
+        if(value && onEnter && e.key === 'Enter') {
             onEnter(value)
         }
     }
