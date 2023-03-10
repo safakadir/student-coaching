@@ -1,3 +1,4 @@
+import axios from "@/lib/axios"
 import { Pagination } from "@/lib/types/pagination-types"
 import { useCallback, useEffect, useState } from "react"
 
@@ -7,7 +8,8 @@ interface UsePaginationApiResult<T> {
     error?: Error,
     gotoPage: (page: number) => void,
     search: (searchParam: string) => void,
-    reset: () => void
+    reset: () => void,
+    reload: () => void
 }
 
 async function fetchData<T>(path: string, query?: string): Promise<Pagination<T>> {
@@ -23,7 +25,7 @@ export const usePaginationApi = <T>(path: string): UsePaginationApiResult<T> => 
     const [page, setPage] = useState<number>(1)
     const [searchParam, setSearchParam] = useState<string|undefined>(undefined)
 
-    useEffect(() => {
+    const loadData = useCallback(() => {
         setLoading(true)
 
         let query: string|undefined
@@ -35,10 +37,10 @@ export const usePaginationApi = <T>(path: string): UsePaginationApiResult<T> => 
             query = params.join('&')
         }
 
-        fetchData<T>(path, query)
+        axios.get<Pagination<T>>(path + (query ? '?'+query : ''))
         .then(response => {
             setError(undefined)
-            setPageResult(response)
+            setPageResult(response.data)
         })
         .catch(err => {
             setError(err)
@@ -46,6 +48,10 @@ export const usePaginationApi = <T>(path: string): UsePaginationApiResult<T> => 
         .finally(() => {
             setLoading(false)
         })
+    }, [page, searchParam])
+
+    useEffect(() => {
+        loadData()
     }, [page, searchParam])
 
     const gotoPage = useCallback((pageGiven: number) => {
@@ -60,5 +66,5 @@ export const usePaginationApi = <T>(path: string): UsePaginationApiResult<T> => 
         setSearchParam(undefined)
     }, [])
 
-    return { pageResult, loading, error, gotoPage, search, reset }
+    return { pageResult, loading, error, gotoPage, search, reset, reload: loadData}
 }
