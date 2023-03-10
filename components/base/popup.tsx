@@ -12,7 +12,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, children }) => {
                 className="absolute inset-0 bg-gray-900 opacity-50"
                 onClick={onClose}
             ></div>
-            <div className="relative bg-white z-50 p-4 rounded shadow-md">
+            <div className="relative bg-white z-50 p-4 rounded-lg shadow-md">
                 {children}
             </div>
         </div>
