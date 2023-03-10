@@ -102,7 +102,7 @@ const OgrenciPage: React.FC = () => {
             </table>
         </div>
         {studentsPage &&
-        <div className="flex justify-between px-6 text-sm text-gray-400 mt-2">
+        <div className="flex flex-col sm:flex-row text-center sm:justify-between px-6 text-sm text-gray-400 mt-2">
             <span>{studentsPage.totalCount} kayıttan {studentsPage.offset+1}-{studentsPage.offset+studentsPage.data.length} arası</span>
             <div>
                 {studentsPage.page > 1 && 
