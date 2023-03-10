@@ -1,5 +1,5 @@
 import Layout from "@/components/layout"
-import React, { useState } from "react"
+import React, { MouseEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { setOgrenci } from "@/store/ogrenci-slice"
 import { useRouter } from "next/router";
@@ -8,11 +8,18 @@ import { usePaginationApi } from "@/hooks/use-pagination-api";
 import Head from "next/head";
 import TextField from "@/components/base/text-field";
 import CloseButton from "@/components/base/close-button";
+import OgrenciForm from "@/components/forms/ogrenci-form";
+import Popup from "@/components/base/popup";
+import { DeepPartial } from "@/lib/types/common";
+import { useMutatorApi } from "@/hooks/use-mutator-api";
 
 const OgrenciPage: React.FC = () => {
 
     const [searchText, setSearchText] = useState<string>('')
+    const [formPopup, setFormPopup] = useState<boolean>(false)
+    const [formOgrenci, setFormOgrenci] = useState<DeepPartial<Ogrenci>>({})
     const apiResult = usePaginationApi<Ogrenci>('/api/ogrenci')
+    const mutator = useMutatorApi<Ogrenci>('/api/ogrenci')
     const studentsPage = apiResult.pageResult
     const students = studentsPage?.data
 
@@ -38,20 +45,34 @@ const OgrenciPage: React.FC = () => {
         setSearchText('')
     }
 
+    const handleSave = (ogrenci: DeepPartial<Ogrenci>) => {
+        mutator.create(ogrenci)
+    }
+
+    useEffect(() => {
+        if(!mutator.loading && formPopup) {
+            setFormPopup(false)
+            apiResult.reload()
+        }
+    }, [mutator.loading])
+
+    const handleOpenForm = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setFormPopup(true)
+    } 
+
     return <>
     <Head>
         <title>Öğrenci İşlemleri</title>
     </Head>
     <Layout className="flex flex-col">
+        <div className="flex justify-end">
+            <button className="btn-secondary mb-3" onClick={handleOpenForm}>Yeni Öğrenci</button>
+        </div>
         <div className="relative w-full">
             <TextField value={searchText} onChange={(value) => setSearchText(value)} onEnter={handleSearchEnter} 
                 placeholder="Öğrenci ara..." />
             {studentsPage?.search && <CloseButton className="absolute right-0 m-2.5" onClick={handleClear} />}
-            <select>
-                <option value="value-1">Value 1</option>
-                <option value="value-2">Value 2</option>
-                <option value="value-3">Value 3</option>
-            </select>
         </div>
         <div className="overflow-x-auto w-full rounded-lg shadow">
             <table className="text-sm text-left text-gray-600 w-full">
@@ -64,7 +85,7 @@ const OgrenciPage: React.FC = () => {
                         <th scope="col" className="whitespace-nowrap px-6 py-4">Okulu</th>
                     </tr>
                     {apiResult.loading &&
-                    <tr className="bg-gray-100 h-1.5">
+                    <tr className="bg-gray-100 h-1.5 overflow-hidden">
                         <td colSpan={5} className="bg-blue-500 h-1.5 w-full origin-[0%_50%] animate-indeterminate"></td>
                     </tr>}
                 </thead>
@@ -93,6 +114,18 @@ const OgrenciPage: React.FC = () => {
         </div>
         }
     </Layout>
+    <Popup isOpen={formPopup} onClose={() => setFormPopup(false)}>
+        <OgrenciForm onChange={ogrenci => setFormOgrenci(ogrenci)}/>
+        {mutator.loading &&
+        <div className="bg-gray-100 h-1.5 overflow-hidden">
+            <div className="bg-blue-500 h-1.5 w-full origin-[0%_50%] animate-indeterminate"></div>
+        </div>
+        }
+        <div className="flex justify-end gap-3">
+            <button className="btn-secondary mt-1" onClick={() => setFormPopup(false)}>Kapat</button>
+            <button className="btn-primary mt-1" onClick={() => handleSave(formOgrenci)}>Kaydet</button>
+        </div>
+    </Popup>
     </>
 }
 

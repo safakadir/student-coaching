@@ -15,7 +15,7 @@ const TextField: React.FC<TextFieldProps> = ({value, placeholder, onChange, onEn
         }
     }
 
-    return <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full" placeholder={placeholder} 
+    return <input type="text" className="border rounded-lg bg-white shadow-xs px-3 py-2 mb-4 w-full placeholder:text-gray-400" placeholder={placeholder} 
         value={value} onChange={e => onChange(e.currentTarget.value)} 
         onKeyDown={handleSearchKeyDown} />
 }
