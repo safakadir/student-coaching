@@ -1,4 +1,4 @@
-This is a tailor-made student-coaching application primarly build for **"Arel Akademi"**
+This is the frontend of a tailor-made student-coaching application primarly build for **"Arel Akademi"**
 
 ## Getting Started
 
