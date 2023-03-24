@@ -52,3 +52,8 @@ export async function searchStudents(search: string, offset: number, limit: numb
 
     return {data: students.slice(offset, offset+limit), totalCount: students.length}
 }
+
+export async function removeStudent(_id: string): Promise<boolean> {
+    await studentsCollection.doc(_id).delete()
+    return true
+}
