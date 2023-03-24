@@ -47,7 +47,7 @@ export const useMutatorApi = <T extends Identable>(path: string) => {
         
     const remove = useCallback((_id: string) => {
         setLoading(true)
-        axios.delete(path+'/'+_id)
+        axios.delete(path+'?_id='+_id)
         .then(response => {
             setError(undefined)
         })

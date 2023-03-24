@@ -1,4 +1,4 @@
-import { addStudent, findStudents, searchStudents } from "@/lib/dao/ogrenci-dao";
+import { addStudent, findStudents, removeStudent, searchStudents } from "@/lib/dao/ogrenci-dao";
 import { Ogrenci } from "@/lib/types/ogrenci-types";
 import { Pagination } from "@/lib/types/pagination-types";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -8,8 +8,15 @@ const HARD_LIMIT = 10
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const PAGE_LIMIT: number = parseNumber(process.env.PAGE_LIMIT) ?? HARD_LIMIT
     
-    if(req.method == 'POST') {
+    if (req.method == 'POST') {
         addStudent(req.body as Ogrenci)
+        return res.status(200).end()
+    }
+    
+    if (req.method == 'DELETE') {
+        const _id = req.query["_id"]
+        if(typeof _id !== 'string') return res.status(400).end()
+        removeStudent(_id)
         return res.status(200).end()
     }
 
