@@ -34,6 +34,14 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Configuration
+
+Application keeps all the configs in environment according to [Twelve Factor](https://12factor.net/config)
+For development, **.env** file is being used to set environment variables at application start. But *.env.\** files are not allowed in the repository.
+(except the one for template) 
+
+Use `.env.template` file as a guide for required environment variables. Copy it by renaming and poppulate the values.
+
 ## Deployment
 
 The backend api is deployed to [Cyclic](https://app.cyclic.sh)
