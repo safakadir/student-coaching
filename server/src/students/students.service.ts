@@ -12,24 +12,22 @@ export class StudentsService {
   constructor(@InjectModel(Student.name) private readonly studentModel: Model<StudentDocument>) {}
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
-    console.log(JSON.stringify(createStudentDto, null, 2))
     const studentCreated = await this.studentModel.create(createStudentDto);
-    console.log(studentCreated)
     return studentCreated
   }
 
-  async findAll(): Promise<Student[]> {
+  async findAll(): Promise<StudentDocument[]> {
     return this.studentModel.find()
   }
 
-  async findOne(id: string): Promise<Student> {
+  async findOne(id: string): Promise<StudentDocument> {
     return this.findExistingById(id)
   }
 
-  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<Student> {
+  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDocument> {
     const existing = await this.findExistingById(id)
-    Object.assign(existing, updateStudentDto);
-    return existing.save();
+    Object.assign(existing, updateStudentDto)
+    return existing.save()
   }
 
   async remove(id: string) {

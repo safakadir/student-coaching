@@ -8,7 +8,7 @@ export class StudentTerm {
     key: string
 
     @Prop()
-    school: string
+    school?: string
 
     @Prop({type: String, enum: GRADES, required: true})
     grade: Grade

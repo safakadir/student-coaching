@@ -3,8 +3,8 @@ import { StudentTerm } from "../schemas/student-term.schema"
 
 export class CreateStudentDto {
     readonly fullName: string
-    readonly birthDate: Date
+    readonly birthDate?: Date
     readonly term: StudentTerm
-    readonly contactPhone: string
-    readonly parents: Parent[]
+    readonly contactPhone?: string
+    readonly parents?: Parent[]
 }

@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 @Schema()
 export class Parent {
     @Prop()
-    degree: string
+    degree?: string
 
     @Prop({required: true})
     contactPhone: string

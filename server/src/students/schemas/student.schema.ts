@@ -11,19 +11,19 @@ export class Student {
     fullName: string
 
     @Prop({type: Date, immutable: true, default: Date.now})
-    registeredAt: Date
+    registeredAt?: Date
 
     @Prop()
-    birthDate: Date
+    birthDate?: Date
 
     @Prop({type: StudentTermSchema, required: true})
     term: StudentTerm
 
     @Prop()
-    contactPhone: string
+    contactPhone?: string
     
     @Prop([ParentSchema])
-    parents: Parent[]
+    parents?: Parent[]
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student)
