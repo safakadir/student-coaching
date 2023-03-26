@@ -54,5 +54,6 @@ Explore the api at [live deployment](https://student-coaching.cyclic.app)
 To learn more about the tools used in this project, take a look at the following resources:
 
 - [Nest.js Documentation](https://docs.nestjs.com/)
+- [Mongoose](https://mongoosejs.com/docs/guide.html)
 
 Bootstrapped with [`@nestjs/cli`](https://docs.nestjs.com/cli/overview).
