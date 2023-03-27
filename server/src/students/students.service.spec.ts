@@ -6,6 +6,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { Student, StudentDocument } from './schemas/student.schema';
 import { StudentsService } from './students.service';
 
+const testCreateDao: CreateStudentDto = {fullName: "Test Student", term: {key: "2022-2023", field: 'EA', grade: 'MEZUN'}}
 const testStudent = {
   _id: "testid",
   fullName: "Test Student",
@@ -54,11 +55,10 @@ describe('StudentService', () => {
     expect(service).toBeDefined()
   });
 
-  it('should create student', async () => {
-    const dto: CreateStudentDto = {fullName: "Test Student", term: {key: "2022-2023", field: 'EA', grade: 'MEZUN'}}
-    const created = await service.create(dto)
+  it('should create student', async () => { 
+    const created = await service.create(testCreateDao)
     expect(model.create).toBeCalled()
-    expect(created).toEqual({...dto, _id:"generatedid"})
+    expect(created).toEqual({...testCreateDao, _id:"generatedid"})
   })
 
   it('should find one student', async () => {
