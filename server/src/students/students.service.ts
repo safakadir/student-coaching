@@ -1,18 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
 
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
-import { Student, StudentDocument } from './schemas/student.schema';
+import { CreateStudentDto } from './dto/create-student.dto'
+import { UpdateStudentDto } from './dto/update-student.dto'
+import { Student, StudentDocument } from './schemas/student.schema'
 
 @Injectable()
 export class StudentsService {
-
-  constructor(@InjectModel(Student.name) private readonly studentModel: Model<StudentDocument>) {}
+  constructor(
+    @InjectModel(Student.name)
+    private readonly studentModel: Model<StudentDocument>,
+  ) {}
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
-    const studentCreated = await this.studentModel.create(createStudentDto);
+    const studentCreated = await this.studentModel.create(createStudentDto)
     return studentCreated
   }
 
@@ -24,7 +26,10 @@ export class StudentsService {
     return this.findExistingById(id)
   }
 
-  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<StudentDocument> {
+  async update(
+    id: string,
+    updateStudentDto: UpdateStudentDto,
+  ): Promise<StudentDocument> {
     const existing = await this.findExistingById(id)
     Object.assign(existing, updateStudentDto)
     return existing.save()
@@ -32,7 +37,7 @@ export class StudentsService {
 
   async remove(id: string) {
     const removed = await this.studentModel.findByIdAndDelete(id)
-    if(!removed) this.throwStudentNotFound()
+    if (!removed) this.throwStudentNotFound()
   }
 
   private async findExistingById(id: string) {
@@ -44,6 +49,6 @@ export class StudentsService {
   }
 
   private throwStudentNotFound() {
-    throw new NotFoundException("Ogrenci bulunamadı.")
+    throw new NotFoundException('Ogrenci bulunamadı.')
   }
 }
